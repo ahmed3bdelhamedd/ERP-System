@@ -1,396 +1,171 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" id="htmlRoot">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">ERP System</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --sidebar-bg: #1e293b;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --border: #e2e8f0;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #020617;
-            --sidebar-bg: #090d16;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.3s, color 0.3s; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); animation: slideInLeft 0.6s ease-out; }
-        [data-lang="ar"] .sidebar { border-right: none; border-left: 1px solid var(--border); animation: slideInRight 0.6s ease-out; }
-
-        .sidebar-header { padding: 20px; font-size: 20px; font-weight: bold; color: #38bdf8; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-        .sidebar-menu { list-style: none; padding: 15px 0; overflow-y: auto; flex-grow: 1; }
-        .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; font-size: 15px; transition: var(--transition); cursor: pointer; }
-        .sidebar-menu li a:hover, .sidebar-menu li.active a { background-color: rgba(56, 189, 248, 0.1); color: #38bdf8; transform: translateX(5px); }
-        [data-lang="ar"] .sidebar-menu li a:hover, [data-lang="ar"] .sidebar-menu li.active a { transform: translateX(-5px); }
-
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; animation: fadeIn 0.8s ease-in-out; }
-        .topbar { background: var(--card-bg); height: 70px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        
-        .controls-group { display: flex; align-items: center; gap: 15px; }
-        .control-btn { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: var(--transition); }
-        .control-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
-
-        .content-body { padding: 25px; overflow-y: auto; flex-grow: 1; background-color: var(--bg-color); }
-        .card { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 20px; animation: fadeInUp 0.5s ease-out; border: 1px solid var(--border); }
-        
-        .btn { background: var(--accent); color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: var(--transition); box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); }
-        .btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid var(--border); padding: 12px; text-align: center; font-size: 14px; color: var(--text-main); }
-        th { background-color: rgba(56, 189, 248, 0.05); color: var(--text-main); }
-        tr { transition: var(--transition); }
-        tr:hover { background-color: rgba(56, 189, 248, 0.03); transform: scale(1.002); }
-
-        .grid-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-        .form-group input, .form-group select { padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--card-bg); color: var(--text-main); transition: var(--transition); }
-        .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
-        .form-group button { grid-column: span 3; margin-top: 10px; }
-
-        .section-view { display: none; }
-        .section-view.active { display: block; animation: fadeIn 0.5s ease-in-out; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نظام ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--side:#1e293b;--bg:#f1f5f9;--card:#fff;--ink:#0f172a;--mut:#64748b;--pri:#2563eb;--ok:#16a34a;--bad:#dc2626;--bd:#e2e8f0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tajawal,Tahoma,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh}
+aside{width:250px;background:var(--side);color:#cbd5e1;padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex-shrink:0}
+aside h1{color:#fff;font-size:22px;margin:0 8px 24px}
+aside nav{flex:1;overflow:auto}
+aside a{display:block;padding:11px 14px;border-radius:10px;color:#cbd5e1;text-decoration:none;cursor:pointer;margin-bottom:2px}
+aside a:hover,aside a.on{background:#334155;color:#fff}
+.me{background:#172033;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;color:#fff;margin-top:10px}
+.av{width:38px;height:38px;border-radius:50%;background:#3b82f6;display:grid;place-items:center;font-weight:700}
+main{flex:1;padding:28px;min-width:0}
+h2{margin:0 0 4px;font-size:28px}.sub{color:var(--mut);margin:0 0 22px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
+.card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 1px 3px #0001}
+.card small{color:var(--mut)}.big{font-size:30px;font-weight:700;margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:14px}
+.bars div{flex:1;background:var(--pri);border-radius:6px 6px 0 0;min-height:6px;position:relative}
+.bars span{position:absolute;bottom:-22px;font-size:11px;color:var(--mut);width:100%;text-align:center}
+table{width:100%;border-collapse:collapse}
+th{background:#f8fafc;color:var(--mut);font-weight:500}
+th,td{padding:12px;text-align:right;border-bottom:1px solid var(--bd)}
+.btn{border:0;border-radius:10px;padding:10px 18px;font:inherit;cursor:pointer;background:var(--pri);color:#fff}
+.btn.g{background:var(--ok)}.btn.l{background:#e2e8f0;color:var(--ink)}.btn.r{background:#fee2e2;color:var(--bad);padding:6px 12px}
+input,select{font:inherit;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;width:100%;background:#fff}
+input:focus,select:focus,.btn:focus-visible,aside a:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+label{display:block;margin:10px 0 4px;font-size:14px;color:var(--mut)}
+.tag{padding:3px 10px;border-radius:99px;font-size:13px;background:#dcfce7;color:var(--ok)}.tag.w{background:#fee2e2;color:var(--bad)}
+.modal{position:fixed;inset:0;background:#0f172a99;display:none;place-items:center;padding:16px;z-index:9}
+.modal.on{display:grid}.box{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:460px}
+.row{display:flex;gap:10px;margin-top:16px}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:12px}
+.prod{background:#f8fafc;border:1px solid var(--bd);border-radius:12px;padding:14px;text-align:center;cursor:pointer}
+.prod:hover{border-color:var(--pri)}
+.tot{font-size:30px;color:var(--pri);font-weight:700}
+.scroll{overflow-x:auto}
+@media(max-width:800px){body{flex-direction:column}aside{width:100%;height:auto;position:static;padding:12px}aside nav{display:flex;overflow:auto;gap:4px}aside a{white-space:nowrap}.me{display:none}.two{grid-template-columns:1fr}main{padding:16px}}
+</style>
 </head>
-<body data-lang="en" data-theme="dark">
+<body>
+<aside>
+  <h1>◆ نظام ERP</h1>
+  <nav id="nav"></nav>
+  <div class="me"><div class="av">م</div><div><b>Ahmed</b><br><small>مدير النظام</small></div></div>
+</aside>
+<main id="main"></main>
+<div class="modal" id="modal"><div class="box" id="box"></div></div>
 
-    <div class="sidebar">
-        <div>
-            <div class="sidebar-header">🔷 <span data-i18n="sysName">ERP System</span></div>
-            <ul class="sidebar-menu">
-                <li class="active" onclick="switchTab('dashboard', this)"><a href="#">📊 <span data-i18n="menuDashboard">Dashboard</span></a></li>
-                <li onclick="switchTab('inventory', this)"><a href="#">📦 <span data-i18n="menuInventory">Inventory</span></a></li>
-                <li onclick="switchTab('customers', this)"><a href="#">👥 <span data-i18n="menuCustomers">Customers</span></a></li>
-                <li onclick="switchTab('pos', this)"><a href="#">🛒 <span data-i18n="menuPOS">POS</span></a></li>
-                <li onclick="switchTab('hr', this)"><a href="#">👨‍💼 <span data-i18n="menuHR">HR</span></a></li>
-                <li onclick="switchTab('users', this)"><a href="#">🔐 <span data-i18n="menuUsers">Users</span></a></li>
-            </ul>
-        </div>
-    </div>
+<script>
+// ---------- التخزين (في متصفح المستخدم) ----------
+const KEY='erp_data_v1';
+const seed={
+  items:[{id:1,name:'Coffee Beans',barcode:'1001',unit:'كجم',price:250,min:5,qty:20},{id:2,name:'Latte',barcode:'1002',unit:'كوب',price:75,min:10,qty:40},{id:3,name:'Milk',barcode:'1003',unit:'لتر',price:40,min:10,qty:6}],
+  customers:[{id:1,name:'Walk-in Customer',phone:'01000000005',active:true},{id:2,name:'Corporate Client',phone:'01000000006',active:true}],
+  employees:[{id:1,name:'Admin User',job:'مدير',dept:'HR',salary:5000,active:true},{id:2,name:'Cashier One',job:'كاشير',dept:'Sales',salary:3500,active:true}],
+  users:[{id:1,name:'Ahmed',role:'Admin'}],
+  sales:[]
+};
+let db;
+try{db=JSON.parse(localStorage.getItem(KEY))||seed}catch(e){db=seed}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}};
+const nid=a=>a.length?Math.max(...a.map(x=>x.id))+1:1;
+const $=s=>document.querySelector(s);
+const money=n=>Number(n).toLocaleString('ar-EG',{maximumFractionDigits:2})+' ج.م';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    <div class="main-content">
-        <div class="topbar">
-            <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search..." style="padding: 8px 15px; width: 300px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text-main); outline: none;" onkeyup="globalSearch()">
-            <div class="controls-group">
-                <button class="control-btn" onclick="toggleLanguage()">🌐 <span id="langText">عربي</span></button>
-                <button class="control-btn" onclick="toggleTheme()">🌓 <span data-i18n="themeBtn">Theme</span></button>
-            </div>
-        </div>
+// ---------- النوافذ ----------
+function modal(html){$('#box').innerHTML=html;$('#modal').classList.add('on')}
+function closeM(){$('#modal').classList.remove('on')}
+$('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
+function form(title,fields,onSave){
+  modal(`<h3 style="margin:0 0 6px">${title}</h3>`+fields.map(f=>`<label>${f.l}</label>`+(f.opts?`<select id="f_${f.k}">${f.opts.map(o=>`<option>${o}</option>`).join('')}</select>`:`<input id="f_${f.k}" type="${f.t||'text'}" value="${f.v??''}">`)).join('')+
+  `<div class="row"><button class="btn" id="ok">حفظ</button><button class="btn l" onclick="closeM()">إلغاء</button></div>`);
+  $('#ok').onclick=()=>{const o={};fields.forEach(f=>{let v=$('#f_'+f.k).value;o[f.k]=f.t==='number'?Number(v)||0:v});if(!o[fields[0].k]){$('#f_'+fields[0].k).focus();return}onSave(o);save();closeM();go(cur)};
+}
 
-        <div class="content-body">
-            
-            <!-- Dashboard Section -->
-            <div id="dashboard" class="section-view active">
-                <h2 data-i18n="dashTitle" style="margin-bottom: 20px;">Dashboard Overview</h2>
-                <div class="card">
-                    <p data-i18n="dashContent">System performance analytics and indicators.</p>
-                </div>
-            </div>
+// ---------- الصفحات ----------
+const pages={
+dash(){
+  const today=new Date().toDateString();
+  const ts=db.sales.filter(s=>new Date(s.date).toDateString()===today);
+  const total=ts.reduce((a,s)=>a+s.total,0);
+  const low=db.items.filter(i=>i.qty<=i.min);
+  const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const last=[...Array(7)].map((_,k)=>{const d=new Date();d.setDate(d.getDate()-(6-k));return{n:days[d.getDay()],v:db.sales.filter(s=>new Date(s.date).toDateString()===d.toDateString()).reduce((a,s)=>a+s.total,0)}});
+  const mx=Math.max(1,...last.map(x=>x.v));
+  const pay=db.employees.filter(e=>e.active).reduce((a,e)=>a+e.salary,0);
+  return `<h2>نظرة عامة على النظام</h2><p class="sub">ملخص الأداء والمؤشرات الرئيسية لليوم</p>
+  <div class="grid"><div class="card"><small>إجمالي المبيعات اليوم</small><div class="big">${money(total)}</div></div>
+  <div class="card"><small>عدد الفواتير اليوم</small><div class="big">${ts.length}</div></div>
+  <div class="card"><small>تكلفة الرواتب (الشهر)</small><div class="big">${money(pay)}</div></div>
+  <div class="card"><small>إجمالي ديون الموردين</small><div class="big">${money(0)}</div></div></div>
+  <div class="two"><div class="card"><h3>المبيعات (آخر 7 أيام)</h3><div class="bars" style="margin-bottom:30px">${last.map(x=>`<div style="height:${x.v/mx*100}%" title="${money(x.v)}"><span>${x.n}</span></div>`).join('')}</div></div>
+  <div class="card"><h3>تنبيهات المخزون <span class="tag w">${low.length} عناصر</span></h3><div class="scroll"><table><tr><th>الصنف</th><th>الكمية</th></tr>${low.map(i=>`<tr><td>${esc(i.name)}</td><td>${i.qty}</td></tr>`).join('')||'<tr><td colspan=2>لا توجد تنبيهات</td></tr>'}</table></div></div></div>`;
+},
+inv(){
+  return `<div class="top"><div><h2>المخزون والمستودعات</h2><p class="sub">إدارة الأصناف والكميات</p></div><button class="btn" onclick="addItem()">+ إضافة صنف جديد</button></div>
+  <div class="card scroll"><table><tr><th>#</th><th>اسم الصنف</th><th>الباركود</th><th>الوحدة</th><th>السعر</th><th>الكمية</th><th>الحالة</th><th></th></tr>
+  ${db.items.map(i=>`<tr><td>${i.id}</td><td>${esc(i.name)}</td><td>${esc(i.barcode)}</td><td>${esc(i.unit)}</td><td>${money(i.price)}</td><td>${i.qty}</td><td><span class="tag ${i.qty<=i.min?'w':''}">${i.qty<=i.min?'تنبيه نفاد':'متوفر'}</span></td><td><button class="btn r" onclick="del('items',${i.id})">حذف</button></td></tr>`).join('')}</table></div>`;
+},
+cust(){
+  return `<div class="top"><div><h2>العملاء</h2><p class="sub">إدارة سجلات العملاء وحساباتهم</p></div><button class="btn" onclick="addCust()">+ إضافة عميل</button></div>
+  <div class="grid"><div class="card"><small>إجمالي العملاء</small><div class="big">${db.customers.length}</div></div></div>
+  <div class="card scroll"><table><tr><th>اسم العميل</th><th>الهاتف</th><th>عدد الفواتير</th><th>الحالة</th><th></th></tr>
+  ${db.customers.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.phone)}</td><td>${db.sales.filter(s=>s.cust==c.id).length}</td><td><span class="tag">نشط</span></td><td><button class="btn r" onclick="del('customers',${c.id})">حذف</button></td></tr>`).join('')}</table></div>`;
+},
+hr(){
+  return `<div class="top"><div><h2>الموارد البشرية</h2><p class="sub">إدارة الموظفين ومسير الرواتب</p></div><button class="btn" onclick="addEmp()">+ إضافة موظف جديد</button></div>
+  <div class="card scroll"><table><tr><th>الاسم</th><th>الوظيفة</th><th>القسم</th><th>الراتب</th><th>الحالة</th><th></th></tr>
+  ${db.employees.map(e=>`<tr><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td>${money(e.salary)}</td><td><span class="tag">نشط</span></td><td><button class="btn r" onclick="del('employees',${e.id})">حذف</button></td></tr>`).join('')}</table></div>`;
+},
+sales(){
+  window.cart=window.cart||[];
+  return `<h2>سلة المشتريات</h2><p class="sub">أضف المنتجات ثم أتمم عملية البيع</p>
+  <div class="two"><div class="card"><label>العميل</label><select id="cu">${db.customers.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
+  <div class="scroll"><table id="ct"></table></div>
+  <label>الخصم</label><input id="disc" type="number" value="0" min="0" oninput="drawCart()">
+  <p>الإجمالي النهائي</p><div class="tot" id="tt"></div>
+  <div class="row"><button class="btn g" onclick="checkout()">✓ إتمام عملية البيع</button><button class="btn l" onclick="window.print()">طباعة الفاتورة</button></div></div>
+  <div class="card"><input id="q" placeholder="ابحث بالباركود أو اسم المنتج..." oninput="drawProds()"><div class="prods" id="pr"></div></div></div>`;
+},
+users(){
+  return `<div class="top"><div><h2>إدارة المستخدمين</h2><p class="sub">إدارة حسابات المستخدمين والصلاحيات</p></div><button class="btn" onclick="addUser()">+ إضافة مستخدم</button></div>
+  <div class="card scroll"><table><tr><th>اسم المستخدم</th><th>الصلاحية</th><th></th></tr>
+  ${db.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.role)}</td><td><button class="btn r" onclick="del('users',${u.id})">حذف</button></td></tr>`).join('')}</table></div>`;
+},
+soon(){return `<h2>${menu.find(m=>m[0]===cur)[1]}</h2><p class="sub">هذه الوحدة قيد التطوير</p>`}
+};
 
-            <!-- Inventory Section -->
-            <div id="inventory" class="section-view">
-                <h2 data-i18n="invTitle" style="margin-bottom: 20px;">Inventory Management</h2>
-                <div class="card">
-                    <h3 data-i18n="formAddProduct" style="margin-bottom: 15px;">Add New Product</h3>
-                    <form id="productForm" class="grid-form" onsubmit="addProduct(event)">
-                        <div class="form-group"><label data-i18n="lblName">Name</label><input type="text" id="p_name" required></div>
-                        <div class="form-group"><label data-i18n="lblBarcode">Barcode</label><input type="text" id="p_barcode" required></div>
-                        <div class="form-group"><label data-i18n="lblUnit">Unit</label><input type="text" id="p_unit" required></div>
-                        <div class="form-group"><label data-i18n="lblCategory">Category</label><input type="text" id="p_category"></div>
-                        <div class="form-group"><label data-i18n="lblBuyPrice">Buy Price</label><input type="number" step="0.01" id="p_buy" value="0"></div>
-                        <div class="form-group"><label data-i18n="lblSellPrice">Sell Price</label><input type="number" step="0.01" id="p_sell" required value="0"></div>
-                        <div class="form-group"><label data-i18n="lblQty">Quantity</label><input type="number" id="p_qty" required value="0"></div>
-                        <div class="form-group"><label data-i18n="lblMin">Min Stock</label><input type="number" id="p_min" required value="5"></div>
-                        <div class="form-group"><label data-i18n="lblSup">Supplier</label><input type="text" id="p_sup"></div>
-                        <button type="submit" class="btn" data-i18n="btnSaveProduct">Save Product</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3 data-i18n="tableProducts" style="margin-bottom: 15px;">Products List</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th data-i18n="thName">Name</th>
-                                <th data-i18n="thBarcode">Barcode</th>
-                                <th data-i18n="thCategory">Category</th>
-                                <th data-i18n="thUnit">Unit</th>
-                                <th data-i18n="thBuy">Buy</th>
-                                <th data-i18n="thSell">Sell</th>
-                                <th data-i18n="thQty">Qty</th>
-                                <th data-i18n="thSup">Supplier</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventoryTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
+// ---------- العمليات ----------
+function del(t,id){if(confirm('هل تريد الحذف؟')){db[t]=db[t].filter(x=>x.id!==id);save();go(cur)}}
+const addItem=()=>form('إضافة صنف جديد',[{k:'name',l:'اسم الصنف *'},{k:'barcode',l:'الباركود'},{k:'unit',l:'الوحدة',opts:['قطعة','كجم','لتر','كوب']},{k:'price',l:'سعر البيع',t:'number'},{k:'min',l:'الحد الأدنى',t:'number'},{k:'qty',l:'الكمية الحالية',t:'number'}],o=>db.items.push({id:nid(db.items),...o}));
+const addCust=()=>form('إضافة عميل',[{k:'name',l:'اسم العميل *'},{k:'phone',l:'الهاتف'}],o=>db.customers.push({id:nid(db.customers),...o,active:true}));
+const addEmp=()=>form('إضافة موظف جديد',[{k:'name',l:'اسم الموظف *'},{k:'job',l:'الوظيفة'},{k:'dept',l:'القسم',opts:['HR','Sales','Production']},{k:'salary',l:'الراتب',t:'number'}],o=>db.employees.push({id:nid(db.employees),...o,active:true}));
+const addUser=()=>form('إضافة مستخدم جديد',[{k:'name',l:'اسم المستخدم *'},{k:'role',l:'الصلاحية',opts:['Admin','Cashier','Viewer']}],o=>db.users.push({id:nid(db.users),...o}));
+function drawProds(){const q=($('#q')?.value||'').toLowerCase();$('#pr').innerHTML=db.items.filter(i=>(i.name+i.barcode).toLowerCase().includes(q)).map(i=>`<div class="prod" onclick="addCart(${i.id})"><b>${esc(i.name)}</b><br><span style="color:var(--pri)">${money(i.price)}</span><br><small>اضغط للإضافة</small></div>`).join('')}
+function addCart(id){const l=cart.find(c=>c.id===id);l?l.n++:cart.push({id,n:1});drawCart()}
+function drawCart(){
+  const rows=cart.map(c=>{const i=db.items.find(x=>x.id===c.id);return{i,c}}).filter(r=>r.i);
+  $('#ct').innerHTML='<tr><th>الصنف</th><th>الكمية</th><th>الإجمالي</th><th></th></tr>'+rows.map(({i,c})=>`<tr><td>${esc(i.name)}</td><td>${c.n}</td><td>${money(i.price*c.n)}</td><td><button class="btn r" onclick="cart=cart.filter(x=>x.id!==${i.id});drawCart()">حذف</button></td></tr>`).join('');
+  const sub=rows.reduce((a,{i,c})=>a+i.price*c.n,0);window.total=Math.max(0,sub-(Number($('#disc').value)||0));$('#tt').textContent=money(window.total);
+}
+function checkout(){
+  if(!cart.length)return alert('السلة فارغة');
+  cart.forEach(c=>{const i=db.items.find(x=>x.id===c.id);if(i)i.qty-=c.n});
+  db.sales.push({id:nid(db.sales),cust:Number($('#cu').value),total:window.total,date:new Date().toISOString()});
+  cart=[];save();alert('تمت عملية البيع بنجاح');go('dash');
+}
 
-            <!-- Customers Section -->
-            <div id="customers" class="section-view">
-                <h2 data-i18n="custTitle" style="margin-bottom: 20px;">Customer Management</h2>
-                <div class="card">
-                    <h3 data-i18n="formAddCust" style="margin-bottom: 15px;">Add Customer</h3>
-                    <form id="customerForm" class="grid-form" onsubmit="addCustomer(event)">
-                        <div class="form-group"><label data-i18n="lblName">Name</label><input type="text" id="c_name" required></div>
-                        <div class="form-group"><label data-i18n="lblPhone">Phone</label><input type="text" id="c_phone" required></div>
-                        <div class="form-group"><label data-i18n="lblBalance">Balance</label><input type="number" step="0.01" id="c_balance" value="0"></div>
-                        <button type="submit" class="btn" data-i18n="btnSaveCust">Save Customer</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3 data-i18n="tableCust" style="margin-bottom: 15px;">Customers List</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th data-i18n="thName">Name</th>
-                                <th data-i18n="thPhone">Phone</th>
-                                <th data-i18n="thBalance">Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody id="customerTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- POS Section -->
-            <div id="pos" class="section-view">
-                <h2 data-i18n="posTitle" style="margin-bottom: 20px;">Point of Sale (POS)</h2>
-                <div class="card">
-                    <p data-i18n="posContent">Billing and checkout interface.</p>
-                </div>
-            </div>
-
-            <!-- HR Section -->
-            <div id="hr" class="section-view">
-                <h2 data-i18n="hrTitle" style="margin-bottom: 20px;">Human Resources</h2>
-                <div class="card">
-                    <p data-i18n="hrContent">Employees, attendance, and payroll management.</p>
-                </div>
-            </div>
-
-            <!-- Users Section -->
-            <div id="users" class="section-view">
-                <h2 data-i18n="usersTitle" style="margin-bottom: 20px;">User Management</h2>
-                <div class="card">
-                    <p data-i18n="usersContent">Manage system users and permissions.</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        const translations = {
-            en: {
-                title: "ERP System",
-                sysName: "ERP System",
-                menuDashboard: "Dashboard",
-                menuInventory: "Inventory",
-                menuCustomers: "Customers",
-                menuPOS: "POS",
-                menuHR: "HR",
-                menuUsers: "Users",
-                searchPlaceholder: "Search...",
-                themeBtn: "Theme",
-                dashTitle: "Dashboard Overview",
-                dashContent: "System performance analytics and indicators.",
-                invTitle: "Inventory Management",
-                formAddProduct: "Add New Product",
-                lblName: "Name",
-                lblBarcode: "Barcode",
-                lblUnit: "Unit",
-                lblCategory: "Category",
-                lblBuyPrice: "Buy Price",
-                lblSellPrice: "Sell Price",
-                lblQty: "Quantity",
-                lblMin: "Min Stock",
-                lblSup: "Supplier",
-                btnSaveProduct: "Save Product",
-                tableProducts: "Products List",
-                thName: "Name",
-                thBarcode: "Barcode",
-                thCategory: "Category",
-                thUnit: "Unit",
-                thBuy: "Buy",
-                thSell: "Sell",
-                thQty: "Qty",
-                thSup: "Supplier",
-                custTitle: "Customer Management",
-                formAddCust: "Add Customer",
-                lblPhone: "Phone",
-                lblBalance: "Balance",
-                btnSaveCust: "Save Customer",
-                tableCust: "Customers List",
-                thPhone: "Phone",
-                thBalance: "Balance",
-                posTitle: "Point of Sale (POS)",
-                posContent: "Billing and checkout interface.",
-                hrTitle: "Human Resources",
-                hrContent: "Employees, attendance, and payroll management.",
-                usersTitle: "User Management",
-                usersContent: "Manage system users and permissions.",
-                empty: "No records found."
-            },
-            ar: {
-                title: "نظام ERP",
-                sysName: "نظام ERP",
-                menuDashboard: "لوحة التحكم",
-                menuInventory: "المخزن والمستودعات",
-                menuCustomers: "العملاء",
-                menuPOS: "المبيعات ونقطة البيع",
-                menuHR: "الموارد البشرية",
-                menuUsers: "إدارة المستخدمين",
-                searchPlaceholder: "بحث...",
-                themeBtn: "الوضع",
-                dashTitle: "نظرة عامة على النظام",
-                dashContent: "تحليلات الأداء والمؤشرات الرئيسية.",
-                invTitle: "إدارة المخزن والمستودعات",
-                formAddProduct: "إضافة صنف جديد",
-                lblName: "اسم الصنف",
-                lblBarcode: "الباركود",
-                lblUnit: "الوحدة",
-                lblCategory: "التصنيف",
-                lblBuyPrice: "سعر الشراء",
-                lblSellPrice: "سعر البيع",
-                lblQty: "الكمية",
-                lblMin: "الحد الأدنى",
-                lblSup: "المورد",
-                btnSaveProduct: "حفظ الصنف",
-                tableProducts: "قائمة الأصناف",
-                thName: "اسم الصنف",
-                thBarcode: "الباركود",
-                thCategory: "التصنيف",
-                thUnit: "الوحدة",
-                thBuy: "الشراء",
-                thSell: "البيع",
-                thQty: "الكمية",
-                thSup: "المورد",
-                custTitle: "إدارة العملاء",
-                formAddCust: "إضافة عميل",
-                lblPhone: "الهاتف",
-                lblBalance: "الرصيد",
-                btnSaveCust: "حفظ العميل",
-                tableCust: "قائمة العملاء",
-                thPhone: "الهاتف",
-                thBalance: "الرصيد",
-                posTitle: "المبيعات ونقطة البيع",
-                posContent: "واجهة الفواتير وعمليات البيع.",
-                hrTitle: "الموارد البشرية",
-                hrContent: "إدارة الموظفين والحضور والرواتب.",
-                usersTitle: "إدارة المستخدمين",
-                usersContent: "إدارة حسابات المستخدمين والصلاحيات.",
-                empty: "لا توجد سجلات مضافة حتى الآن."
-            }
-        };
-
-        let currentLang = 'en';
-        let products = [];
-        let customers = [];
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            const html = document.getElementById('htmlRoot');
-            html.setAttribute('lang', currentLang);
-            html.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
-            document.body.setAttribute('data-lang', currentLang);
-            document.getElementById('langText').innerText = currentLang === 'en' ? 'عربي' : 'English';
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
-            });
-
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[currentLang][key]) el.setAttribute('placeholder', translations[currentLang][key]);
-            });
-            renderTables();
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
-        }
-
-        function addProduct(e) {
-            e.preventDefault();
-            products.push({
-                name: document.getElementById('p_name').value,
-                barcode: document.getElementById('p_barcode').value,
-                unit: document.getElementById('p_unit').value,
-                category: document.getElementById('p_category').value,
-                buy: document.getElementById('p_buy').value,
-                sell: document.getElementById('p_sell').value,
-                qty: document.getElementById('p_qty').value,
-                min: document.getElementById('p_min').value,
-                sup: document.getElementById('p_sup').value
-            });
-            renderTables();
-            document.getElementById('productForm').reset();
-        }
-
-        function addCustomer(e) {
-            e.preventDefault();
-            customers.push({
-                name: document.getElementById('c_name').value,
-                phone: document.getElementById('c_phone').value,
-                balance: document.getElementById('c_balance').value
-            });
-            renderTables();
-            document.getElementById('customerForm').reset();
-        }
-
-        function renderTables() {
-            const invBody = document.getElementById('inventoryTableBody');
-            invBody.innerHTML = products.length === 0 ? `<tr><td colspan="9">${translations[currentLang].empty}</td></tr>` : '';
-            products.forEach((p, idx) => {
-                invBody.innerHTML += `<tr><td>${idx+1}</td><td>${p.name}</td><td>${p.barcode}</td><td>${p.category||'-'}</td><td>${p.unit}</td><td>${p.buy}</td><td>${p.sell}</td><td>${p.qty}</td><td>${p.sup||'-'}</td></tr>`;
-            });
-
-            const custBody = document.getElementById('customerTableBody');
-            custBody.innerHTML = customers.length === 0 ? `<tr><td colspan="4">${translations[currentLang].empty}</td></tr>` : '';
-            customers.forEach((c, idx) => {
-                custBody.innerHTML += `<tr><td>${idx+1}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.balance}</td></tr>`;
-            });
-        }
-
-        function globalSearch() {
-            let term = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('tbody tr').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
-            });
-        }
-    </script>
+// ---------- التنقل ----------
+const menu=[['dash','لوحة التحكم'],['inv','المخزون والمستودعات'],['cust','العملاء'],['prod','الرئيسي والإنتاج'],['hr','الموارد البشرية'],['sales','المبيعات والفواتير'],['perm','الصلاحيات'],['users','إدارة المستخدمين'],['set','الإعدادات']];
+let cur='dash';
+function go(p){
+  cur=p;
+  $('#nav').innerHTML=menu.map(m=>`<a tabindex="0" class="${m[0]===p?'on':''}" onclick="go('${m[0]}')">${m[1]}</a>`).join('');
+  $('#main').innerHTML=(pages[p]||pages.soon)();
+  if(p==='sales'){drawProds();drawCart()}
+}
+go('dash');
+</script>
 </body>
 </html>
