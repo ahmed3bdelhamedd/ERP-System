@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot">
+<html lang="en" dir="ltr" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,14 +29,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.3s, color 0.3s; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid var(--border); animation: slideInRight 0.6s ease-out; }
-        [data-lang="en"] .sidebar { border-left: none; border-right: 1px solid var(--border); animation: slideInLeft 0.6s ease-out; }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); animation: slideInLeft 0.6s ease-out; }
+        [data-lang="ar"] .sidebar { border-right: none; border-left: 1px solid var(--border); animation: slideInRight 0.6s ease-out; }
 
         .sidebar-header { padding: 20px; font-size: 20px; font-weight: bold; color: #38bdf8; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
         .sidebar-menu { list-style: none; padding: 15px 0; overflow-y: auto; flex-grow: 1; }
-        .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; font-size: 15px; transition: var(--transition); }
-        .sidebar-menu li a:hover, .sidebar-menu li.active a { background-color: rgba(56, 189, 248, 0.1); color: #38bdf8; transform: translateX(-5px); }
-        [data-lang="en"] .sidebar-menu li a:hover, [data-lang="en"] .sidebar-menu li.active a { transform: translateX(5px); }
+        .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; font-size: 15px; transition: var(--transition); cursor: pointer; }
+        .sidebar-menu li a:hover, .sidebar-menu li.active a { background-color: rgba(56, 189, 248, 0.1); color: #38bdf8; transform: translateX(5px); }
+        [data-lang="ar"] .sidebar-menu li a:hover, [data-lang="ar"] .sidebar-menu li.active a { transform: translateX(-5px); }
 
         .main-content { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; animation: fadeIn 0.8s ease-in-out; }
         .topbar { background: var(--card-bg); height: 70px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -60,9 +60,12 @@
         .grid-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-        .form-group input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--card-bg); color: var(--text-main); transition: var(--transition); }
+        .form-group input, .form-group select { padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--card-bg); color: var(--text-main); transition: var(--transition); }
         .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
         .form-group button { grid-column: span 3; margin-top: 10px; }
+
+        .section-view { display: none; }
+        .section-view.active { display: block; animation: fadeIn 0.5s ease-in-out; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -70,183 +73,268 @@
         @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
     </style>
 </head>
-<body data-lang="ar" data-theme="dark">
+<body data-lang="en" data-theme="dark">
 
     <div class="sidebar">
         <div>
             <div class="sidebar-header">🔷 <span data-i18n="sysName">ERP System</span></div>
             <ul class="sidebar-menu">
-                <li class="active"><a href="#">📊 <span data-i18n="menuInv">Inventory</span></a></li>
+                <li class="active" onclick="switchTab('dashboard', this)"><a href="#">📊 <span data-i18n="menuDashboard">Dashboard</span></a></li>
+                <li onclick="switchTab('inventory', this)"><a href="#">📦 <span data-i18n="menuInventory">Inventory</span></a></li>
+                <li onclick="switchTab('customers', this)"><a href="#">👥 <span data-i18n="menuCustomers">Customers</span></a></li>
+                <li onclick="switchTab('pos', this)"><a href="#">🛒 <span data-i18n="menuPOS">POS</span></a></li>
+                <li onclick="switchTab('hr', this)"><a href="#">👨‍💼 <span data-i18n="menuHR">HR</span></a></li>
+                <li onclick="switchTab('users', this)"><a href="#">🔐 <span data-i18n="menuUsers">Users</span></a></li>
             </ul>
         </div>
     </div>
 
     <div class="main-content">
         <div class="topbar">
-            <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث..." style="padding: 8px 15px; width: 300px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text-main); outline: none;" onkeyup="searchTable()">
+            <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search..." style="padding: 8px 15px; width: 300px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text-main); outline: none;" onkeyup="globalSearch()">
             <div class="controls-group">
-                <button class="control-btn" onclick="toggleLanguage()">🌐 <span id="langText">English</span></button>
+                <button class="control-btn" onclick="toggleLanguage()">🌐 <span id="langText">عربي</span></button>
                 <button class="control-btn" onclick="toggleTheme()">🌓 <span data-i18n="themeBtn">Theme</span></button>
             </div>
         </div>
 
         <div class="content-body">
-            <h2 data-i18n="pageTitle" style="margin-bottom: 20px;">إدارة المخزن</h2>
-
-            <div class="card">
-                <h3 data-i18n="formTitle" style="margin-bottom: 15px;">إضافة صنف جديد</h3>
-                <form id="productForm" class="grid-form" onsubmit="addProduct(event)">
-                    <div class="form-group">
-                        <label data-i18n="lblName">اسم الصنف</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblBarcode">الباركود</label>
-                        <input type="text" id="barcode" required>
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblUnit">الوحدة</label>
-                        <input type="text" id="unit" required>
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblCat">التصنيف</label>
-                        <input type="text" id="category">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblBuy">سعر الشراء</label>
-                        <input type="number" step="0.01" id="buy_price" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblSell">سعر البيع</label>
-                        <input type="number" step="0.01" id="sell_price" required value="0">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblQty">الكمية</label>
-                        <input type="number" id="stock_quantity" required value="0">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblMin">الحد الأدنى</label>
-                        <input type="number" id="min_stock" required value="5">
-                    </div>
-                    <div class="form-group">
-                        <label data-i18n="lblSup">المورد</label>
-                        <input type="text" id="supplier">
-                    </div>
-                    <button type="submit" class="btn" data-i18n="btnSave">حفظ الصنف</button>
-                </form>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section-view active">
+                <h2 data-i18n="dashTitle" style="margin-bottom: 20px;">Dashboard Overview</h2>
+                <div class="card">
+                    <p data-i18n="dashContent">System performance analytics and indicators.</p>
+                </div>
             </div>
 
-            <div class="card">
-                <h3 data-i18n="tableTitle" style="margin-bottom: 15px;">قائمة الأصناف</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-i18n="thNum">#</th>
-                            <th data-i18n="thName">اسم الصنف</th>
-                            <th data-i18n="thBarcode">الباركود</th>
-                            <th data-i18n="thCat">التصنيف</th>
-                            <th data-i18n="thUnit">الوحدة</th>
-                            <th data-i18n="thBuy">سعر الشراء</th>
-                            <th data-i18n="thSell">سعر البيع</th>
-                            <th data-i18n="thQty">الكمية</th>
-                            <th data-i18n="thSup">المورد</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
+            <!-- Inventory Section -->
+            <div id="inventory" class="section-view">
+                <h2 data-i18n="invTitle" style="margin-bottom: 20px;">Inventory Management</h2>
+                <div class="card">
+                    <h3 data-i18n="formAddProduct" style="margin-bottom: 15px;">Add New Product</h3>
+                    <form id="productForm" class="grid-form" onsubmit="addProduct(event)">
+                        <div class="form-group"><label data-i18n="lblName">Name</label><input type="text" id="p_name" required></div>
+                        <div class="form-group"><label data-i18n="lblBarcode">Barcode</label><input type="text" id="p_barcode" required></div>
+                        <div class="form-group"><label data-i18n="lblUnit">Unit</label><input type="text" id="p_unit" required></div>
+                        <div class="form-group"><label data-i18n="lblCategory">Category</label><input type="text" id="p_category"></div>
+                        <div class="form-group"><label data-i18n="lblBuyPrice">Buy Price</label><input type="number" step="0.01" id="p_buy" value="0"></div>
+                        <div class="form-group"><label data-i18n="lblSellPrice">Sell Price</label><input type="number" step="0.01" id="p_sell" required value="0"></div>
+                        <div class="form-group"><label data-i18n="lblQty">Quantity</label><input type="number" id="p_qty" required value="0"></div>
+                        <div class="form-group"><label data-i18n="lblMin">Min Stock</label><input type="number" id="p_min" required value="5"></div>
+                        <div class="form-group"><label data-i18n="lblSup">Supplier</label><input type="text" id="p_sup"></div>
+                        <button type="submit" class="btn" data-i18n="btnSaveProduct">Save Product</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="tableProducts" style="margin-bottom: 15px;">Products List</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th data-i18n="thName">Name</th>
+                                <th data-i18n="thBarcode">Barcode</th>
+                                <th data-i18n="thCategory">Category</th>
+                                <th data-i18n="thUnit">Unit</th>
+                                <th data-i18n="thBuy">Buy</th>
+                                <th data-i18n="thSell">Sell</th>
+                                <th data-i18n="thQty">Qty</th>
+                                <th data-i18n="thSup">Supplier</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+                </div>
             </div>
+
+            <!-- Customers Section -->
+            <div id="customers" class="section-view">
+                <h2 data-i18n="custTitle" style="margin-bottom: 20px;">Customer Management</h2>
+                <div class="card">
+                    <h3 data-i18n="formAddCust" style="margin-bottom: 15px;">Add Customer</h3>
+                    <form id="customerForm" class="grid-form" onsubmit="addCustomer(event)">
+                        <div class="form-group"><label data-i18n="lblName">Name</label><input type="text" id="c_name" required></div>
+                        <div class="form-group"><label data-i18n="lblPhone">Phone</label><input type="text" id="c_phone" required></div>
+                        <div class="form-group"><label data-i18n="lblBalance">Balance</label><input type="number" step="0.01" id="c_balance" value="0"></div>
+                        <button type="submit" class="btn" data-i18n="btnSaveCust">Save Customer</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="tableCust" style="margin-bottom: 15px;">Customers List</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th data-i18n="thName">Name</th>
+                                <th data-i18n="thPhone">Phone</th>
+                                <th data-i18n="thBalance">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- POS Section -->
+            <div id="pos" class="section-view">
+                <h2 data-i18n="posTitle" style="margin-bottom: 20px;">Point of Sale (POS)</h2>
+                <div class="card">
+                    <p data-i18n="posContent">Billing and checkout interface.</p>
+                </div>
+            </div>
+
+            <!-- HR Section -->
+            <div id="hr" class="section-view">
+                <h2 data-i18n="hrTitle" style="margin-bottom: 20px;">Human Resources</h2>
+                <div class="card">
+                    <p data-i18n="hrContent">Employees, attendance, and payroll management.</p>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="section-view">
+                <h2 data-i18n="usersTitle" style="margin-bottom: 20px;">User Management</h2>
+                <div class="card">
+                    <p data-i18n="usersContent">Manage system users and permissions.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
         const translations = {
-            ar: {
-                title: "نظام ERP",
-                sysName: "نظام ERP",
-                menuInv: "المخزن والمستودعات",
-                searchPlaceholder: "ابحث باسم الصنف أو الباركود...",
-                themeBtn: "الوضع",
-                pageTitle: "إدارة المخزن والمستودعات",
-                formTitle: "إضافة صنف جديد",
-                lblName: "اسم الصنف *",
-                lblBarcode: "الباركود *",
-                lblUnit: "الوحدة *",
-                lblCat: "التصنيف",
-                lblBuy: "سعر الشراء",
-                lblSell: "سعر البيع *",
-                lblQty: "الكمية الحالية *",
-                lblMin: "الحد الأدنى *",
-                lblSup: "المورد",
-                btnSave: "حفظ الصنف في المخزن",
-                tableTitle: "قائمة الأصناف الحالية",
-                thNum: "#",
-                thName: "اسم الصنف",
-                thBarcode: "الباركود",
-                thCat: "التصنيف",
-                thUnit: "الوحدة",
-                thBuy: "سعر الشراء",
-                thSell: "سعر البيع",
-                thQty: "الكمية",
-                thSup: "المورد",
-                emptyData: "لا توجد أصناف مضافة حتى الآن."
-            },
             en: {
                 title: "ERP System",
                 sysName: "ERP System",
-                menuInv: "Inventory & Warehouses",
-                searchPlaceholder: "Search by name or barcode...",
+                menuDashboard: "Dashboard",
+                menuInventory: "Inventory",
+                menuCustomers: "Customers",
+                menuPOS: "POS",
+                menuHR: "HR",
+                menuUsers: "Users",
+                searchPlaceholder: "Search...",
                 themeBtn: "Theme",
-                pageTitle: "Inventory Management",
-                formTitle: "Add New Product",
-                lblName: "Product Name *",
-                lblBarcode: "Barcode *",
-                lblUnit: "Unit *",
-                lblCat: "Category",
-                lblBuy: "Buy Price",
-                lblSell: "Sell Price *",
-                lblQty: "Stock Quantity *",
-                lblMin: "Min Stock *",
+                dashTitle: "Dashboard Overview",
+                dashContent: "System performance analytics and indicators.",
+                invTitle: "Inventory Management",
+                formAddProduct: "Add New Product",
+                lblName: "Name",
+                lblBarcode: "Barcode",
+                lblUnit: "Unit",
+                lblCategory: "Category",
+                lblBuyPrice: "Buy Price",
+                lblSellPrice: "Sell Price",
+                lblQty: "Quantity",
+                lblMin: "Min Stock",
                 lblSup: "Supplier",
-                btnSave: "Save Product",
-                tableTitle: "Current Products List",
-                thNum: "#",
-                thName: "Product Name",
+                btnSaveProduct: "Save Product",
+                tableProducts: "Products List",
+                thName: "Name",
                 thBarcode: "Barcode",
-                thCat: "Category",
+                thCategory: "Category",
                 thUnit: "Unit",
-                thBuy: "Buy Price",
-                thSell: "Sell Price",
-                thQty: "Quantity",
+                thBuy: "Buy",
+                thSell: "Sell",
+                thQty: "Qty",
                 thSup: "Supplier",
-                emptyData: "No products added yet."
+                custTitle: "Customer Management",
+                formAddCust: "Add Customer",
+                lblPhone: "Phone",
+                lblBalance: "Balance",
+                btnSaveCust: "Save Customer",
+                tableCust: "Customers List",
+                thPhone: "Phone",
+                thBalance: "Balance",
+                posTitle: "Point of Sale (POS)",
+                posContent: "Billing and checkout interface.",
+                hrTitle: "Human Resources",
+                hrContent: "Employees, attendance, and payroll management.",
+                usersTitle: "User Management",
+                usersContent: "Manage system users and permissions.",
+                empty: "No records found."
+            },
+            ar: {
+                title: "نظام ERP",
+                sysName: "نظام ERP",
+                menuDashboard: "لوحة التحكم",
+                menuInventory: "المخزن والمستودعات",
+                menuCustomers: "العملاء",
+                menuPOS: "المبيعات ونقطة البيع",
+                menuHR: "الموارد البشرية",
+                menuUsers: "إدارة المستخدمين",
+                searchPlaceholder: "بحث...",
+                themeBtn: "الوضع",
+                dashTitle: "نظرة عامة على النظام",
+                dashContent: "تحليلات الأداء والمؤشرات الرئيسية.",
+                invTitle: "إدارة المخزن والمستودعات",
+                formAddProduct: "إضافة صنف جديد",
+                lblName: "اسم الصنف",
+                lblBarcode: "الباركود",
+                lblUnit: "الوحدة",
+                lblCategory: "التصنيف",
+                lblBuyPrice: "سعر الشراء",
+                lblSellPrice: "سعر البيع",
+                lblQty: "الكمية",
+                lblMin: "الحد الأدنى",
+                lblSup: "المورد",
+                btnSaveProduct: "حفظ الصنف",
+                tableProducts: "قائمة الأصناف",
+                thName: "اسم الصنف",
+                thBarcode: "الباركود",
+                thCategory: "التصنيف",
+                thUnit: "الوحدة",
+                thBuy: "الشراء",
+                thSell: "البيع",
+                thQty: "الكمية",
+                thSup: "المورد",
+                custTitle: "إدارة العملاء",
+                formAddCust: "إضافة عميل",
+                lblPhone: "الهاتف",
+                lblBalance: "الرصيد",
+                btnSaveCust: "حفظ العميل",
+                tableCust: "قائمة العملاء",
+                thPhone: "الهاتف",
+                thBalance: "الرصيد",
+                posTitle: "المبيعات ونقطة البيع",
+                posContent: "واجهة الفواتير وعمليات البيع.",
+                hrTitle: "الموارد البشرية",
+                hrContent: "إدارة الموظفين والحضور والرواتب.",
+                usersTitle: "إدارة المستخدمين",
+                usersContent: "إدارة حسابات المستخدمين والصلاحيات.",
+                empty: "لا توجد سجلات مضافة حتى الآن."
             }
         };
 
-        let currentLang = 'ar';
+        let currentLang = 'en';
         let products = [];
+        let customers = [];
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
 
         function toggleLanguage() {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
             const html = document.getElementById('htmlRoot');
             html.setAttribute('lang', currentLang);
-            html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            html.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
             document.body.setAttribute('data-lang', currentLang);
-            document.getElementById('langText').innerText = currentLang === 'ar' ? 'English' : 'عربي';
+            document.getElementById('langText').innerText = currentLang === 'en' ? 'عربي' : 'English';
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
-                    el.innerText = translations[currentLang][key];
-                }
+                if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
             });
 
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[currentLang][key]) {
-                    el.setAttribute('placeholder', translations[currentLang][key]);
-                }
+                if (translations[currentLang][key]) el.setAttribute('placeholder', translations[currentLang][key]);
             });
-            renderTable();
+            renderTables();
         }
 
         function toggleTheme() {
@@ -255,54 +343,52 @@
             body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
         }
 
-        function addProduct(event) {
-            event.preventDefault();
-            const newProduct = {
-                name: document.getElementById('name').value,
-                barcode: document.getElementById('barcode').value,
-                unit: document.getElementById('unit').value,
-                category: document.getElementById('category').value,
-                buy_price: document.getElementById('buy_price').value,
-                sell_price: document.getElementById('sell_price').value,
-                stock_quantity: document.getElementById('stock_quantity').value,
-                min_stock: document.getElementById('min_stock').value,
-                supplier: document.getElementById('supplier').value
-            };
-            products.push(newProduct);
-            renderTable();
+        function addProduct(e) {
+            e.preventDefault();
+            products.push({
+                name: document.getElementById('p_name').value,
+                barcode: document.getElementById('p_barcode').value,
+                unit: document.getElementById('p_unit').value,
+                category: document.getElementById('p_category').value,
+                buy: document.getElementById('p_buy').value,
+                sell: document.getElementById('p_sell').value,
+                qty: document.getElementById('p_qty').value,
+                min: document.getElementById('p_min').value,
+                sup: document.getElementById('p_sup').value
+            });
+            renderTables();
             document.getElementById('productForm').reset();
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            if (products.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="color: var(--text-muted); padding: 20px;">${translations[currentLang].emptyData}</td></tr>`;
-                return;
-            }
-            products.forEach((p, index) => {
-                let stockStyle = p.stock_quantity <= p.min_stock ? 'background: rgba(239, 68, 68, 0.2); color: #ef4444;' : 'background: rgba(34, 197, 94, 0.2); color: #22c55e;';
-                let row = `<tr>
-                    <td>${index + 1}</td>
-                    <td>${p.name}</td>
-                    <td>${p.barcode}</td>
-                    <td>${p.category || '-'}</td>
-                    <td>${p.unit}</td>
-                    <td>${p.buy_price}</td>
-                    <td>${p.sell_price}</td>
-                    <td><span style="padding: 4px 8px; border-radius: 6px; ${stockStyle}">${p.stock_quantity}</span></td>
-                    <td>${p.supplier || '-'}</td>
-                </tr>`;
-                tbody.innerHTML += row;
+        function addCustomer(e) {
+            e.preventDefault();
+            customers.push({
+                name: document.getElementById('c_name').value,
+                phone: document.getElementById('c_phone').value,
+                balance: document.getElementById('c_balance').value
+            });
+            renderTables();
+            document.getElementById('customerForm').reset();
+        }
+
+        function renderTables() {
+            const invBody = document.getElementById('inventoryTableBody');
+            invBody.innerHTML = products.length === 0 ? `<tr><td colspan="9">${translations[currentLang].empty}</td></tr>` : '';
+            products.forEach((p, idx) => {
+                invBody.innerHTML += `<tr><td>${idx+1}</td><td>${p.name}</td><td>${p.barcode}</td><td>${p.category||'-'}</td><td>${p.unit}</td><td>${p.buy}</td><td>${p.sell}</td><td>${p.qty}</td><td>${p.sup||'-'}</td></tr>`;
+            });
+
+            const custBody = document.getElementById('customerTableBody');
+            custBody.innerHTML = customers.length === 0 ? `<tr><td colspan="4">${translations[currentLang].empty}</td></tr>` : '';
+            customers.forEach((c, idx) => {
+                custBody.innerHTML += `<tr><td>${idx+1}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.balance}</td></tr>`;
             });
         }
 
-        function searchTable() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let rows = document.querySelectorAll('#tableBody tr');
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
+        function globalSearch() {
+            let term = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('tbody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
             });
         }
     </script>
